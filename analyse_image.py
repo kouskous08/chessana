@@ -29,12 +29,3 @@ def detecter_echequier(image_path,output_path):
     cv2.imwrite(output_path, image)
     
 detecter_echequier('C:\\Users\\hp\\Desktop\\connectmobile\\image\\setranj.jpg', 'C:\\Users\\hp\\Desktop\\connectmobile\\image\\a.jpg')
-
-
-
-
-
-
-
-
-
