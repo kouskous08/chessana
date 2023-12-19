@@ -3,7 +3,7 @@ import time
 from PIL import Image
 
 # Adresse IP de l'appareil Android
-IP_DU_DISPOSITIF = "192.168.1.9"
+IP_DU_DISPOSITIF = ""
 
 # Port ADB par défaut
 PORT_ADB = 5555
