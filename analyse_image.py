@@ -1,31 +1,67 @@
+from PIL import Image
 import cv2
 import numpy as np
-def detecter_echequier(image_path,output_path):
+
+image_path = "C:\\Users\\hp\\Desktop\\connectmobile\\image"
+
+def decouper_image(image_name):
     # Charger l'image
-    image = cv2.imread(image_path)
-    
+    img = Image.open(f"{image_path}\\{image_name}")
+
+    # Spécifier les coordonnées du rectangle de découpe (gauche, haut, droite, bas)
+    coordinates = (460, 0, 1654, 1160)  # (gauche, haut, droite, bas)
+
+    # Découper l'image en utilisant les coordonnées spécifiées
+    cropped_img = img.crop(coordinates)
+
+    # Enregistrer l'image découpée
+    cropped_img.save(f"{image_path}\\copy_{image_name}")
+
+decouper_image("b.jpg")
+
+def img_noir_blanc(image_name):
+    # Charger l'image depuis le fichier
+    image = cv2.imread(f"{image_path}\\copy_{image_name}")
+
     # Convertir l'image en niveaux de gris
-    gris = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    
-    # Utiliser la détection des coins (Harris corner detection)
-    coins = cv2.cornerHarris(gris, 2, 3, 0.04)
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-    # Dilater les coins pour les rendre plus visibles
-    coins = cv2.dilate(coins, None)
-    
-    # Appliquer un seuillage pour obtenir les coins détectés
-    seuil = 0.01 * coins.max()
-    coins_detectes = np.where(coins > seuil)
-    
-	# Dessiner des cercles autour des coins détectés
-    image[coins_detectes] = [0, 0, 255]
+    # Appliquer un flou gaussien pour réduire le bruit et améliorer la détection des contours
+    blurred = cv2.GaussianBlur(gray, (5, 5), 0)
 
-    # Afficher l'image résultante
-    cv2.imshow('Echiquier detecte', image)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # Utiliser la détection des contours de Canny
+    edges = cv2.Canny(blurred, 50, 150)
+
+    # Trouver les contours dans l'image
+    contours, _ = cv2.findContours(edges.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    # Filtrer les contours pour obtenir les rectangles
+    rectangles = []
+    for contour in contours:
+        epsilon = 0.02 * cv2.arcLength(contour, True)
+        approx = cv2.approxPolyDP(contour, epsilon, True)
+        if len(approx) == 4 and cv2.contourArea(approx) > 1000:
+            rectangles.append(approx)
+
+    # Dessiner les rectangles détectés sur l'image originale
+    result = image.copy()
+    cv2.drawContours(result, rectangles, -1, (0, 255, 0), 2)
+
+    # Récupérer les coordonnées du rectangle vert
+    x, y, w, h = cv2.boundingRect(rectangles[0])
+
+    # Utiliser la transformation de Hough Probabiliste uniquement dans le rectangle vert
+    roi = edges[y:y+h, x:x+w]
+    lines = cv2.HoughLinesP(roi, 1, np.pi / 180, threshold=90, minLineLength=100, maxLineGap=400)#b9a kd bedel fiha htad chof bi ana kolchi mejdod
+
+    # Dessiner les segments détectés sur l'image originale
+    for line in lines:
+        x1, y1, x2, y2 = line[0]
+        # Ajouter les coordonnées du rectangle vert pour dessiner les lignes dans le contexte de l'image complète
+        cv2.line(result, (x + x1, y + y1), (x + x2, y + y2), (0, 0, 255), 2)
+    
 
     # Enregistrer l'image résultante
-    cv2.imwrite(output_path, image)
-    
-detecter_echequier('C:\\Users\\hp\\Desktop\\connectmobile\\image\\setranj.jpg', 'C:\\Users\\hp\\Desktop\\connectmobile\\image\\a.jpg')
+    cv2.imwrite(f"{image_path}\\result_{image_name}", result)
+
+img_noir_blanc("b.jpg")
