@@ -17,7 +17,7 @@ def decouper_image(image_name):
     # Enregistrer l'image découpée
     cropped_img.save(f"{image_path}\\copy_{image_name}")
 
-decouper_image("b.jpg")
+
 
 def img_noir_blanc(image_name):
     # Charger l'image depuis le fichier
@@ -47,21 +47,9 @@ def img_noir_blanc(image_name):
     result = image.copy()
     cv2.drawContours(result, rectangles, -1, (0, 255, 0), 2)
 
-    # Récupérer les coordonnées du rectangle vert
-    x, y, w, h = cv2.boundingRect(rectangles[0])
-
-    # Utiliser la transformation de Hough Probabiliste uniquement dans le rectangle vert
-    roi = edges[y:y+h, x:x+w]
-    lines = cv2.HoughLinesP(roi, 1, np.pi / 180, threshold=90, minLineLength=100, maxLineGap=400)#b9a kd bedel fiha htad chof bi ana kolchi mejdod
-
-    # Dessiner les segments détectés sur l'image originale
-    for line in lines:
-        x1, y1, x2, y2 = line[0]
-        # Ajouter les coordonnées du rectangle vert pour dessiner les lignes dans le contexte de l'image complète
-        cv2.line(result, (x + x1, y + y1), (x + x2, y + y2), (0, 0, 255), 2)
-    
-
     # Enregistrer l'image résultante
     cv2.imwrite(f"{image_path}\\result_{image_name}", result)
+
+
 
 img_noir_blanc("b.jpg")

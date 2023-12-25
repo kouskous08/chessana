@@ -1,0 +1,2 @@
+image_path = 'C:\\Users\\hp\\Desktop\\connectmobile\\image\\copy_b.jpg'
+output_path = 'C:\\Users\\hp\\Desktop\\connectmobile\\image\\copy_2_b.jpg'
