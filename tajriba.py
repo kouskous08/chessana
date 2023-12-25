@@ -45,3 +45,6 @@ def compter_carreaux_blancs(nom_image):
     print(f"Nombre de carreaux blancs : {nombre_carreaux_noirs}")
 
 compter_carreaux_blancs("copy_b.jpg")
+#yaaaa dakiiiii mchi 3adl wahd image bwa7da wu chof coordonne diala wu menba3d ayi moraba3 3ay kon 3ando coordonne dialo mhn htan chi nhar wu 3adla wu hada ghir tadye3 d lwa9t  ana n 3tik mital:
+#db 3ana A1 Fiha A wu fiha 1 wu 3an 3adlo le carre fayn kayn l intersection entre le rectangle de A wu 1
+#wu menba3d 3ad super posihom bach d chof teswira mhm hin i kon 3andk wa9t khawi 3adla
