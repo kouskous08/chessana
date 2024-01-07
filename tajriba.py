@@ -1,5 +1,5 @@
 import cv2
-
+import numpy as np
 def tracer_rectangles(image_path, output_path, rectangles, color=(0, 100, 0), thickness=1):
     # Charger l'image à partir du fichier
     image = cv2.imread(image_path)
@@ -32,7 +32,7 @@ def intersection(rectangle1, rectangle2):
 
 # Définir le chemin de l'image d'entrée
 image_path = "C:\\Users\\hp\\Desktop\\connectmobile\\image"
-image_name="\\a_de.jpg"
+image_name="\\b_de.jpg"
 # Définir le chemin de sortie pour l'image modifiée
 output_image_path = "C:\\Users\\hp\\Desktop\\connectmobile\\image\\a_modifiee.jpg"
 
@@ -61,37 +61,52 @@ cb=(x0,650,xf,750)
 ca=(x0,750,xf,850)
 
 # Liste des coordonnées des rectangles à tracer
-rectangles_list_n = [c1,c2,c3,c4,c5,c6,c7,c8]
-rectangles_list_l=[ca,cb,cc,cd,ce,cf,cg,ch]
+rectangles_list_n = [c6]
+rectangles_list_l=[ce]
 
 # Appeler la fonction pour tracer les rectangles et enregistrer l'image
-tracer_rectangles(image_path+image_name, output_image_path, rectangles_list_n)
-tracer_rectangles(output_image_path, output_image_path, rectangles_list_l,(0,0,255))
+#tracer_rectangles(image_path+image_name, output_image_path, rectangles_list_n)
+#tracer_rectangles(output_image_path, output_image_path, rectangles_list_l,(0,0,255))
 
 
-def comparer_images(image_path1, image_path2, coords_sup_gauche, coords_inf_droite, output_path):
-    # Charger les images
-    image1 = cv2.imread(image_path1)
-    image2 = cv2.imread(image_path2)
+def comparer_image(image1, image2, coords,output_path, seuil=500000):
+    # Charger l'image
+    image1 = cv2.imread(image1)
+    image2 = cv2.imread(image2)
 
-    # Extraire la région d'intérêt des deux images
-    region1 = image1[coords_sup_gauche[1]:coords_inf_droite[1], coords_sup_gauche[0]:coords_inf_droite[0]]
-    region2 = image2[coords_sup_gauche[1]:coords_inf_droite[1], coords_sup_gauche[0]:coords_inf_droite[0]]
+    # Extraire les coordonnées du coin supérieur gauche et du coin inférieur droit
+    x1, y1 = coords[0], coords[1]
+    x2, y2 = coords[2], coords[3]
 
-    # Calculer la différence entre les deux régions
+    # Extraire la région spécifiée
+    region1 = image1[y1:y2, x1:x2]
+    region2 = image2[y1:y2, x1:x2]
+
+    # Calculer la différence absolue entre les deux régions
     difference = cv2.absdiff(region1, region2)
 
-    # Enregistrer l'image de différence à l'emplacement spécifié
+    # Calculer la somme des valeurs des pixels de la différence
+    somme_diff = np.sum(difference)
+    print(somme_diff)
     cv2.imwrite(output_path, difference)
+    # Comparer avec le seuil
+    if somme_diff > seuil:
+        
+        return True
+    else:
+        return False
+    
 
 # Exemple d'utilisation avec les coordonnées de l'intersection de c1 et ca
-coords_intersection = intersection(c6, ce)
+coords_intersection = intersection(ch, c6)
 
 img1="\\a_de.jpg"
 img2="\\b_de.jpg"
 imgdif="\\difference_image.jpg"
-comparer_images(image_path+img1, image_path+img1, coords_intersection[:2], coords_intersection[2:], image_path+imgdif)
-
-
+c=comparer_image(image_path+img1,image_path+img2,coords_intersection,image_path+imgdif)
+if c :
+    print("mota3 3amar")
+else:
+    print("mota3 khawi")
 
 
