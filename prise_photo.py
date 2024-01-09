@@ -3,10 +3,10 @@ import time
 from PIL import Image
 
 # Adresse IP de l'appareil Android
-IP_DU_DISPOSITIF = ""
+IP_DU_DISPOSITIF = "<"
 
 # Port ADB par défaut
-PORT_ADB = 5555
+PORT_ADB = 35945
 
 # Dossier de destination sur le PC
 DOSSIER_DESTINATION_PC = r"C:\Users\hp\Desktop\connectmobile\image"
