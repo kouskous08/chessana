@@ -1,31 +1,18 @@
 import subprocess
 import time
 import cv2
+import numpy as np
 
-# Adresse IP de l'appareil Android
+#prendre photo
 IP_DU_DISPOSITIF = ""
 
-# Port ADB par défaut
 PORT_ADB = 5555
 
-# Dossier de destination sur le PC
-DOSSIER_DESTINATION_PC = r"C:\Users\hp\Desktop\connectmobile\image"
+DOSSIER_DESTINATION_PC = "C:\\Users\\hp\\Desktop\\connectmobile\\image"
 
-# Dossier de destination sur l'appareil Android
 DOSSIER_DESTINATION_ANDROID = "/sdcard/DCIM/Camera/mobile"
 
-def crop_image(input_image, output_path, x, y, width, height):
-    # Charger l'image
-    img = cv2.imread(input_image)
-
-    # Découper l'image en utilisant les coordonnées x, y, largeur et hauteur spécifiées
-    cropped_img = img[y:y+height, x:x+width]
-
-    # Enregistrer l'image découpée
-    cv2.imwrite(output_path, cropped_img)
-
-
-def  capture_photo(nom_photo):
+def  prendre_photo(nom_photo):
 
     debut_chronometre_global = time.time()
     
@@ -54,10 +41,6 @@ def  capture_photo(nom_photo):
     afficher_duree(duree_ecoulee_global)
     
 
-
-
-    redemmarer_serveur()
-
 def afficher_duree(duree):
     heures, reste = divmod(duree, 3600)
     minutes, secondes = divmod(reste, 60)
@@ -69,7 +52,18 @@ def redemmarer_serveur():
     lancer_serveur = "adb start-server"
     subprocess.run(lancer_serveur, shell=True)
 
-# Exemple d'utilisation
-nom_photo_personnalise = "setranj.jpg"
-capture_photo(nom_photo_personnalise)
+#couper l image (3la 7asab la taille d echequier)
 
+def crop_image(input_image=DOSSIER_DESTINATION_PC, output_path , x, y, width, height):
+    img = cv2.imread(input_image)
+    cropped_img = img[y:y+height, x:x+width]
+    cv2.imwrite(output_path, cropped_img)
+
+
+x = 0
+y = 420
+width = 1000
+height = 883
+
+#ta9sim d la tables n ligne et collone
+#mchi chof analyse_image.py

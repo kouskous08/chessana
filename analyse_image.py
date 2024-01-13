@@ -68,55 +68,37 @@ ca=(x0,750,xf,850)
 #tracer_rectangles(image_path+image_name, output_image_path, rectangles_list_n)
 #tracer_rectangles(output_image_path, output_image_path, rectangles_list_l,(0,0,255))
 
+def bege_en_rouge(image_name):
+    image = cv2.imread(image_name)
+    couleur_source = np.array([72, 155, 194])
+    nouvelle_couleur = np.array([0, 0, 255])
+    tolerance = 50
+    masque = np.all(np.abs(image - couleur_source) < tolerance, axis=-1)
+    image[masque] = nouvelle_couleur
+    cv2.imwrite('image_modifiee.jpg', image)
 
-def comparer_image(image1, image2, coords, output_path, seuil=50000):
-    # Charger l'image
-    image1 = cv2.imread(image1)
-    image2 = cv2.imread(image2)
 
-    # Convertir les images en niveaux de gris
-    image1_xyz = cv2.cvtColor(image1, cv2.COLOR_BGR2XYZ)
-    image2_xyz = cv2.cvtColor(image2, cv2.COLOR_BGR2XYZ)
-
-    # Extraire les coordonnées du coin supérieur gauche et du coin inférieur droit
+def presence_rouge(image_name,coords):
+    image = cv2.imread(image_name) 
     x1, y1 = coords[0], coords[1]
     x2, y2 = coords[2], coords[3]
-
-    # Extraire la région spécifiée
-    region1 = image1_xyz[y1:y2, x1:x2]
-    region2 = image2_xyz[y1:y2, x1:x2]
-
-
-    # Calculer la différence absolue entre les deux régions
-    difference = cv2.absdiff(region1, region2)
-
-    # Calculer la somme des valeurs des pixels de la différence
-    somme_diff = np.sum(difference)
-    print(somme_diff)
-    cv2.imwrite(output_path, difference)
-
-
-
-
-    # Comparer avec le seuil
-    if somme_diff > seuil:
-        return True
-    else:
-        return False
+    region = image[y1:y2, x1:x2]
+    couleur_a_detecter = np.array([0, 0, 255]) 
+    tolerance = 5
+    couleur_basse = couleur_a_detecter - tolerance
+    couleur_haute = couleur_a_detecter + tolerance    
+    masque = cv2.inRange(region, couleur_basse, couleur_haute)
+    presence_couleur_specifique = np.any(masque > 0)
+    return presence_couleur_specifique
 
 a=ch 
-b=c8  
+b=c1  
 
-# Exemple d'utilisation avec les coordonnées de l'intersection de c1 et ca
-img1="\\a_de.jpg"
-img2="\\c_de.jpg"
-imgdif="\\difference_image.jpg"
+
 
 coords_intersection = intersection(a, b)
-c=comparer_image(image_path+img1,image_path+img2,coords_intersection,image_path+imgdif)
-if c :
-    print("mota3 3amar")
-else:
-    print("mota3 khawi")
+bege_en_rouge("image/G.jpg")
+presence_rouge('image_modifiee.jpg',coords_intersection)
+
 
 
