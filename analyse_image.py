@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-def tracer_rectangles(image_path, output_path, rectangles, color=(0, 100, 0), thickness=1):
+def tracer_rectangles(image_path, output_path, rectangles, color=(0, 100, 0), thickness=3 ):
     # Charger l'image à partir du fichier
     image = cv2.imread(image_path)
 
@@ -36,37 +36,37 @@ image_name="\\c_de.jpg"
 # Définir le chemin de sortie pour l'image modifiée
 output_image_path = "C:\\Users\\hp\\Desktop\\connectmobile\\image\\a_modifiee.jpg"
 
-x0=42
-y0=50
-xf=850
-yf=850
+x0=80
+y0=80
+xf=2170
+yf=2144
 yn=48
 
-c8=(42,y0,145,yf)
-c7=(145,y0,250,yf)
-c6=(250,y0,350,yf)
-c5=(350,y0,450,yf)
-c4=(450,y0,550,yf)
-c3=(550,y0,650,yf)
-c2=(650,y0,750,yf)
-c1=(750,y0,850,yf)
+c8=(80,y0,350,yf)
+c7=(350,y0,610,yf)
+c6=(610,y0,870,yf)
+c5=(870,y0,1130,yf)
+c4=(1130,y0,1390,yf)
+c3=(1390,y0,1650,yf)
+c2=(1650,y0,1910,yf)
+c1=(1910,y0,2170,yf)
 
-ch=(x0,50,xf,150)
-cg=(x0,150,xf,250)
-cf=(x0,250,xf,350)
-ce=(x0,350,xf,450)
-cd=(x0,450,xf,550)
-cc=(x0,550,xf,650)
-cb=(x0,650,xf,750)
-ca=(x0,750,xf,850)
+ch=(x0,80,xf,340)
+cg=(x0,340,xf,600)
+cf=(x0,600,xf,860)
+ce=(x0,860,xf,1120)
+cd=(x0,1120,xf,1370)
+cc=(x0,1370,xf,1630)
+cb=(x0,1630,xf,1890)
+ca=(x0,1890,xf,2144)
 
 # Liste des coordonnées des rectangles à tracer
-#rectangles_list_n = [c6]
-#rectangles_list_l=[ce]
+rectangles_list_n = [c8,c7,c6,c5,c4,c3,c2,c1]
+rectangles_list_l=[ch,cg,cf,ce,cd,cc,cb,ca]
 
-# Appeler la fonction pour tracer les rectangles et enregistrer l'image
-#tracer_rectangles(image_path+image_name, output_image_path, rectangles_list_n)
-#tracer_rectangles(output_image_path, output_image_path, rectangles_list_l,(0,0,255))
+ #Appeler la fonction pour tracer les rectangles et enregistrer l'image
+tracer_rectangles(image_path+image_name, output_image_path, rectangles_list_n)
+tracer_rectangles(output_image_path, output_image_path, rectangles_list_l,(0,0,255))
 
 def bege_en_rouge(image_name):
     image = cv2.imread(image_name)
@@ -89,15 +89,15 @@ def presence_rouge(image_name,coords):
     couleur_haute = couleur_a_detecter + tolerance    
     masque = cv2.inRange(region, couleur_basse, couleur_haute)
     presence_couleur_specifique = np.any(masque > 0)
-    return presence_couleur_specifique
+    return presence_couleur_specifique >1000
 
-a=ch 
-b=c1  
+a=cb 
+b=c8  
 
 
 
 coords_intersection = intersection(a, b)
-bege_en_rouge("image/G.jpg")
+bege_en_rouge("image/b_de.jpg")
 presence_rouge('image_modifiee.jpg',coords_intersection)
 
 

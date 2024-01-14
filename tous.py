@@ -54,16 +54,16 @@ def redemmarer_serveur():
 
 #couper l image (3la 7asab la taille d echequier)
 
-def crop_image(input_image=DOSSIER_DESTINATION_PC, output_path , x, y, width, height):
+def crop_image(input_image, output_path):
     img = cv2.imread(input_image)
-    cropped_img = img[y:y+height, x:x+width]
+    cropped_img = img[1000:1000+2260, 0:0+2260]#img[y:y+height, x:x+width]
     cv2.imwrite(output_path, cropped_img)
 
 
 x = 0
-y = 420
-width = 1000
-height = 883
-
+y = 1000
+width = 2260
+height = 2260
+crop_image("image\\c.jpg","image\\c_de.jpg",x,y,width,height)
 #ta9sim d la tables n ligne et collone
 #mchi chof analyse_image.py
